@@ -4,10 +4,10 @@
 class DisplayManager{
   private:
     Adafruit_SSD1306 display;
-    int address;
+    uint8_t address;
 
   public:
-    DisplayManager(int displayWidth, int displayHeight, int displayAddress);
+    DisplayManager(int displayWidth, int displayHeight, uint8_t displayAddress);
     void init();
     inline void clear() { display.clearDisplay(); }
     inline void update() { display.display(); }

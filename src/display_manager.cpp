@@ -2,7 +2,7 @@
 #include <Arduino.h>
 #include <Adafruit_SSD1306.h>
 
-DisplayManager::DisplayManager(int displayWidth, int displayHeight, int displayAddress) : display(displayWidth, displayHeight, &Wire, -1), address(displayAddress){}
+DisplayManager::DisplayManager(int displayWidth, int displayHeight, uint8_t displayAddress) : display(displayWidth, displayHeight, &Wire, -1), address(displayAddress){}
 
 void DisplayManager::init(){
   if (!display.begin(SSD1306_SWITCHCAPVCC, address))
