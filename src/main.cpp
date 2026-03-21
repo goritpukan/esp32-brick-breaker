@@ -1,17 +1,13 @@
 #include <Arduino.h>
 #include "display_manager.hpp"
-#include "menu_screen.hpp"
-#include "button.hpp"
+#include "screen_manager.hpp"
 
 #define SCREEN_ADDR 0x3C
 #define DISPLAY_WIDTH 128
 #define DISPLAY_HEIGHT 64
 
 DisplayManager displayManager(DISPLAY_WIDTH, DISPLAY_HEIGHT, SCREEN_ADDR);
-MenuScreen menuScreen(displayManager);
-Button *leftButton = nullptr;
-Button *rightButton = nullptr;
-Button *acceptButton = nullptr;
+ScreenManager screenManager;
 
 void setup()
 {
@@ -20,28 +16,10 @@ void setup()
 
   Wire.begin();
   displayManager.init();
-  menuScreen.render();
-
-  static Button leftBtn(19, [&]()
-                        { menuScreen.selectNext(); });
-  leftButton = &leftBtn;
-
-  static Button rightBtn(23, [&]()
-                         { menuScreen.selectPrevious(); });
-  rightButton = &rightBtn;
-
-  static Button acceptBtn(18, [&]()
-                          { menuScreen.selectCurrent(); });
-  acceptButton = &acceptBtn;
+  screenManager.init(displayManager);
 }
 
 void loop()
 {
-  if (leftButton && rightButton && acceptButton)
-  {
-    leftButton->update();
-    rightButton->update();
-    acceptButton->update();
-  }
-  delay(50);
+  screenManager.update();
 }
