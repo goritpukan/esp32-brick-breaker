@@ -1,3 +1,5 @@
+#pragma once
+
 #include "display_manager.hpp"
 
 class MenuScreen{
