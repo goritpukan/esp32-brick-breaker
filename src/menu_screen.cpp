@@ -1,4 +1,7 @@
 #include "menu_screen.hpp"
+#include "screen_manager.hpp"
+#include "screen_enum.hpp"
+#include <cstring>
 
 void MenuScreen::render()
 {
@@ -43,12 +46,20 @@ void MenuScreen::selectPrevious()
   render();
 }
 
-void MenuScreen::selectCurrent()
+ScreenEnum MenuScreen::selectCurrent()
 {
-  if (strcmp(items[currentIndex], "Start") == 0)
+  const char *current = items[currentIndex];
+
+  if (strcmp(current, "Start") == 0)
   {
-    displayManager.clear();
-    displayManager.drawTextCentered("Start", 20);
-    displayManager.update();
+    return ScreenEnum::GAME;
+  }
+  else if (strcmp(current, "Statistics") == 0)
+  {
+    return ScreenEnum::STATISTICS;
+  }
+  else if (strcmp(current, "About") == 0)
+  {
+    return ScreenEnum::ABOUT;
   }
 }

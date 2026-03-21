@@ -2,6 +2,7 @@
 #include "menu_screen.hpp"
 #include "display_manager.hpp"
 #include "button.hpp"
+#include "screen_enum.hpp"
 
 ScreenManager::ScreenManager()
     : currentScreen(ScreenEnum::MENU)
@@ -14,6 +15,7 @@ ScreenManager::~ScreenManager()
   delete rightButton;
   delete acceptButton;
   delete menuScreen;
+  delete aboutScreen;
 }
 
 // Should be initialized after display!
@@ -31,6 +33,8 @@ void ScreenManager::init(DisplayManager &displayManager)
                            { handleRightButton(); });
   acceptButton = new Button(18, [this]()
                             { handleAcceptButton(); });
+
+  aboutScreen = new AboutScreen(displayManager);
 }
 
 void ScreenManager::handleLeftButton()
@@ -39,6 +43,9 @@ void ScreenManager::handleLeftButton()
   {
   case ScreenEnum::MENU:
     menuScreen->selectPrevious();
+    break;
+  case ScreenEnum::ABOUT:
+    aboutScreen->scrollUp();
     break;
   }
 }
@@ -50,6 +57,9 @@ void ScreenManager::handleRightButton()
   case ScreenEnum::MENU:
     menuScreen->selectNext();
     break;
+  case ScreenEnum::ABOUT:
+    aboutScreen->scrollDown();
+    break;
   }
 }
 
@@ -58,7 +68,10 @@ void ScreenManager::handleAcceptButton()
   switch (currentScreen)
   {
   case ScreenEnum::MENU:
-    menuScreen->selectCurrent();
+    setScreen(menuScreen->selectCurrent());
+    break;
+  case ScreenEnum::ABOUT:
+    setScreen(ScreenEnum::MENU);
     break;
   }
 }
@@ -70,4 +83,21 @@ void ScreenManager::update()
   leftButton->update();
   rightButton->update();
   acceptButton->update();
+}
+
+void ScreenManager::setScreen(ScreenEnum screen)
+{
+  if (!menuScreen)
+    return;
+
+  switch (screen)
+  {
+  case ScreenEnum::MENU:
+    currentScreen = ScreenEnum::MENU;
+    menuScreen->render();
+    break;
+  case ScreenEnum::ABOUT:
+    currentScreen = ScreenEnum::ABOUT;
+    aboutScreen->render();
+  }
 }

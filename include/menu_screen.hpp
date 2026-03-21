@@ -1,18 +1,19 @@
 #pragma once
-
 #include "display_manager.hpp"
+#include "screen_enum.hpp"
 
-class MenuScreen{
-  private:
-    DisplayManager &displayManager;
-    uint8_t currentIndex = 0;
-    const char *items[3] = {"Start", "Statistics", "About"};
-    static constexpr size_t numItems = sizeof(items) / sizeof(items[0]);
+class MenuScreen
+{
+private:
+  DisplayManager &displayManager;
+  uint8_t currentIndex = 0;
+  const char *items[3] = {"Start", "Statistics", "About"};
+  static constexpr size_t numItems = sizeof(items) / sizeof(items[0]);
 
-  public:
-    MenuScreen(DisplayManager &displayManager) : displayManager(displayManager) {}
-    void render();
-    void selectNext();
-    void selectPrevious();
-    void selectCurrent();
+public:
+  MenuScreen(DisplayManager &displayManager) : displayManager(displayManager) {}
+  void render();
+  void selectNext();
+  void selectPrevious();
+  ScreenEnum selectCurrent();
 };
